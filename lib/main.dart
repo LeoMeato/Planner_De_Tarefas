@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:planner_de_tarefas/home.dart';
 
 void main() {
+  runApp(MaterialApp(title: 'Planner de Tarefas', home: Home(), debugShowCheckedModeBanner: false,));
+}
+
+/*void main() {
   runApp(const MyApp());
 }
 
@@ -122,4 +127,4 @@ class _MyHomePageState extends State<MyHomePage> {
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
-}
+}*/
