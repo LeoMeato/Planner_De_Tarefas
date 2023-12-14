@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:planner_de_tarefas/home.dart';
+import 'package:Planner_De_Tarefas/home.dart';
 
 void main() {
   runApp(MaterialApp(title: 'Planner de Tarefas', home: Home(), debugShowCheckedModeBanner: false,));

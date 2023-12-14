@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:planner_de_tarefas/helper.dart';
-import 'package:planner_de_tarefas/model.dart';
+import 'package:Planner_De_Tarefas/helper.dart';
+import 'package:Planner_De_Tarefas/model.dart';
 import 'dart:async';
 
 class Home extends StatefulWidget {
