@@ -20,8 +20,12 @@ class _HomeState extends State<Home> {
 
   TextEditingController _controllerBoardColor = TextEditingController();
   @override
-  void initState() async {
+  void initState() {
     super.initState();
+    InicializarOBJ();
+  }
+
+  void InicializarOBJ() async {
     var vr = await tbh.get();
     print("aqui");
     for (var v in vr) {

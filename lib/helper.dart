@@ -119,3 +119,97 @@ class UserHelper extends Helper {
     db.execute(sql);
   }
 }
+/*
+
+class TaskBoardHelper {
+  static final tableName = "task_board";
+  static Database? _db;
+  static final TaskBoardHelper _taskBoardHelper = TaskBoardHelper._internal();
+
+  factory TaskBoardHelper() {
+    return _taskBoardHelper;
+  }
+
+  TaskBoardHelper._internal();
+
+  initDb() async {
+    final dbPath = await getDatabasesPath();
+    final path = join(dbPath, "task_board.db");
+
+    Database db = await openDatabase(
+      path,
+      version: 1,
+      onCreate: _onCreateDb
+    );
+
+    return db;
+
+  }
+
+  void _onCreateDb(Database db, int version) {
+    String sql = """
+    CREATE TABLE task_board(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name VARCHAR NOT NULL,
+    color INTEGER NOT NULL
+);
+    """;
+
+    db.execute(sql);
+
+  }
+
+  Future<Database?> get db async {
+
+    _db ??= await initDb();
+
+    return _db;
+  }
+
+  Future<int> insert(Task_Board task) async {
+    var database = await db;
+    print("Insert Task");
+
+    int result = await database!.insert(
+      tableName,
+      task.toMap()
+    );
+
+    return result;
+  }
+
+  Future<int> update(Task_Board task) async {
+    var database = await db;
+
+    int result = await database!.update(
+      tableName,
+      task.toMap(),
+      where: "id=?",
+      whereArgs: [task.id]
+    );
+
+    return result;
+  }
+
+  Future<int> delete(int id) async {
+    var database = await db;
+
+    int result = await database!.delete(
+      tableName,
+      where: "id=?",
+      whereArgs: [id]
+    );
+
+    return result;
+  }
+
+  get() async {
+    var database = await db;
+
+    String sql = "SELECT * FROM $tableName;";
+
+    List results = await database!.rawQuery(sql);
+
+    return results;
+  }
+}*/

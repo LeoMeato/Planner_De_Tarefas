@@ -10,11 +10,7 @@ environment:
 
 dependencies:
   flutter:
-    sdk: flutter
-  path_provider: ^2.0.11
-  sqflite: ^2.2.0+2
-  path: ^1.8.2
-    
+    sdk: flutter 
   http: ^1.1.0
     
   cupertino_icons: ^1.0.2
@@ -22,6 +18,9 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  path_provider: ^2.0.11
+  sqflite: ^2.2.0+2
+  path: ^1.8.2
 
   flutter_lints: ^3.0.1
 
