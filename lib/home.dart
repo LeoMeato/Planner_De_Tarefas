@@ -32,6 +32,9 @@ class _HomeState extends State<Home> {
       Task_Board tb = Task_Board.fromMap(v);
       boardsObj.add(tb);
     }
+    setState(() {
+      
+    });
   }
 
   @override

@@ -22,7 +22,6 @@ abstract class Helper {
   void _onCreateDb(Database db, int version);
 
   Future<Database?> get db async {
-    
     _db ??= await initDb();
 
     return _db;
@@ -55,14 +54,25 @@ abstract class Helper {
   }
 
   Future<List> get() async {
-    
     var database = await db;
-    
+
     String sql = "SELECT * FROM $tableName;";
 
     List results = await database!.rawQuery(sql);
 
     return results;
+  }
+
+  tmp() async {
+    var database = await db;
+    String sql = "DROP TABLE task";
+    database!.execute(sql);
+    sql = """CREATE TABLE task_board(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name VARCHAR NOT NULL,
+    color INTEGER NOT NULL
+);""";
+    database.execute(sql);
   }
 }
 
