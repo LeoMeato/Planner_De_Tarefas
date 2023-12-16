@@ -74,6 +74,18 @@ abstract class Helper {
 );""";
     database.execute(sql);
   }
+
+  tmp2() async {
+    var database = await db;
+    String sql = "DROP TABLE task_board";
+    database!.execute(sql);
+    sql = """CREATE TABLE task_board(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name VARCHAR NOT NULL,
+    color INTEGER NOT NULL
+);""";
+    database.execute(sql);
+  }
 }
 
 class TaskHelper extends Helper {

@@ -3,6 +3,8 @@ import 'package:Planner_De_Tarefas/helper.dart';
 import 'package:Planner_De_Tarefas/model.dart';
 import 'dart:async';
 
+var list = ["Amarelo", "Laranja", "Vermelho", "Azul", "Verde", "Rosa"];
+
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -18,7 +20,7 @@ class _HomeState extends State<Home> {
 
   TextEditingController _controllerBoardName = TextEditingController();
 
-  TextEditingController _controllerBoardColor = TextEditingController();
+  int color = 0;
   @override
   void initState() {
     super.initState();
@@ -32,18 +34,41 @@ class _HomeState extends State<Home> {
       Task_Board tb = Task_Board.fromMap(v);
       boardsObj.add(tb);
     }
-    setState(() {
-      
-    });
+    setState(() {});
   }
+
+  String dropdownValue = list.first;
 
   @override
   Widget build(BuildContext context) {
     boards = [];
+    MaterialColor c;
     for (var v in boardsObj) {
+      switch (v.color) {
+        case 0:
+          c = Colors.yellow;
+          break;
+        case 1:
+          c = Colors.orange;
+          break;
+        case 2:
+          c = Colors.red;
+          break;
+        case 3:
+          c = Colors.blue;
+          break;
+        case 4:
+          c = Colors.green;
+          break;
+        case 5:
+          c = Colors.pink;
+          break;
+        default:
+          c = Colors.yellow;
+      }
       boards.add(Card(
         shadowColor: Colors.black12,
-        color: Colors.blue,
+        color: c,
         child: SizedBox(
           width: MediaQuery.of(context).size.width - 50,
           height: 125,
@@ -84,12 +109,28 @@ class _HomeState extends State<Home> {
                                 decoration:
                                     InputDecoration(labelText: "Board name"),
                                 onChanged: (text) {}),
-                            TextField(
-                                controller: _controllerBoardColor,
-                                decoration: InputDecoration(
-                                    labelText:
-                                        "Board color (ainda não faz nada)"),
-                                onChanged: (text) {}),
+                            DropdownButton<String>(
+                              isExpanded: true,
+                              value: dropdownValue,
+                              icon: const Icon(Icons.arrow_downward),
+                              style: const TextStyle(color: Colors.deepPurple),
+                              underline: Container(
+                                height: 3,
+                                color: Colors.deepPurpleAccent,
+                              ),
+                              onChanged: (String? value) {
+                                setState(() {
+                                  dropdownValue = value!;
+                                });
+                              },
+                              items: list.map<DropdownMenuItem<String>>(
+                                  (String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                            ),
                           ],
                         ),
                       ),
@@ -101,8 +142,28 @@ class _HomeState extends State<Home> {
                             child: Text("Cancelar")),
                         TextButton(
                             onPressed: () {
+                              switch (dropdownValue) {
+                                case "Amarelo":
+                                  color = 0;
+                                  break;
+                                case "Laranja":
+                                  color = 1;
+                                  break;
+                                case "Vermelho":
+                                  color = 2;
+                                  break;
+                                case "Azul":
+                                  color = 3;
+                                  break;
+                                case "Verde":
+                                  color = 4;
+                                  break;
+                                case "Rosa":
+                                  color = 5;
+                                  break;
+                              }
                               Task_Board tb =
-                                  Task_Board(_controllerBoardName.text, 0);
+                                  Task_Board(_controllerBoardName.text, color);
                               boardsObj.add(tb);
                               tbh.insert(tb);
                               _controllerBoardName.text = "";

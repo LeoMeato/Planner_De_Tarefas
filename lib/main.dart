@@ -1,8 +1,13 @@
+import 'package:Planner_De_Tarefas/testes.dart';
 import 'package:flutter/material.dart';
 import 'package:Planner_De_Tarefas/home.dart';
 
 void main() {
-  runApp(MaterialApp(title: 'Planner de Tarefas', home: Home(), debugShowCheckedModeBanner: false,));
+  runApp(MaterialApp(
+    title: 'Planner de Tarefas',
+    home: Home(),
+    debugShowCheckedModeBanner: false,
+  ));
 }
 
 /*void main() {
