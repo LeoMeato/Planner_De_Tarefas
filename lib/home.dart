@@ -35,7 +35,6 @@ class _HomeState extends State<Home> {
 
   void InicializarOBJ() async {
     var vr = await tbh.get();
-    print("aqui");
     for (var v in vr) {
       Task_Board tb = Task_Board.fromMap(v);
       boardsObj.add(tb);
@@ -80,7 +79,16 @@ class _HomeState extends State<Home> {
           child: SizedBox(
             width: MediaQuery.of(context).size.width - 50,
             height: 125,
-            child: Text(v.name),
+            child: Container(
+                padding: EdgeInsets.all(10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(v.name),
+                    Text("Total: ${v.qtdTasks} (Valor fixo)")
+                  ],
+                )),
           ),
         ),
         onTap: () {
@@ -230,13 +238,16 @@ class _HomeState extends State<Home> {
                     print(item);
                     break;
                   case 1:
-                    Navigator.pushNamed(context, Pesquisa.routeName, arguments: Id(userId));
+                    Navigator.pushNamed(context, Pesquisa.routeName,
+                        arguments: Id(userId));
                     break;
                   case 2:
-                    Navigator.pushNamed(context, TarefasRecentes.routeName, arguments: Id(userId));
+                    Navigator.pushNamed(context, TarefasRecentes.routeName,
+                        arguments: Id(userId));
                     break;
                   case 3:
-                    Navigator.pushNamed(context, TarefasConcluidas.routeName, arguments: Id(userId));
+                    Navigator.pushNamed(context, TarefasConcluidas.routeName,
+                        arguments: Id(userId));
                     break;
                 }
               }),

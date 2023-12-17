@@ -63,6 +63,14 @@ abstract class Helper {
     return results;
   }
 
+  select(sql) async {
+    var database = await db;
+
+    List results = await database!.rawQuery(sql);
+
+    return results;
+  }
+
   tmp() async {
     var database = await db;
     String sql = "DROP TABLE task";
@@ -127,7 +135,7 @@ class TaskBoardHelper extends Helper {
 }
 
 class UserHelper extends Helper {
-  UserHelper() : super("task");
+  UserHelper() : super("user");
   void _onCreateDb(Database db, int version) {
     String sql = """
     CREATE TABLE user(

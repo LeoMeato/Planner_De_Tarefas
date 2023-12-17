@@ -1,4 +1,4 @@
-class Task extends Table{
+class Task extends Table {
   late String title;
   int? isCompleted;
   late int user_id;
@@ -43,9 +43,10 @@ class Task extends Table{
   }
 }
 
-class Task_Board extends Table{
+class Task_Board extends Table {
   late String name;
   late int color;
+  int qtdTasks = 0;
 
   Task_Board(this.name, this.color);
 
