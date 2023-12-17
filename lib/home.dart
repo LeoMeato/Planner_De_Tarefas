@@ -1,12 +1,18 @@
+import 'package:Planner_De_Tarefas/arguments.dart';
+import 'package:Planner_De_Tarefas/pesquisa.dart';
+import 'package:Planner_De_Tarefas/planner.dart';
+import 'package:Planner_De_Tarefas/tarefas_concluidas.dart';
+import 'package:Planner_De_Tarefas/tarefas_recentes.dart';
 import 'package:flutter/material.dart';
 import 'package:Planner_De_Tarefas/helper.dart';
 import 'package:Planner_De_Tarefas/model.dart';
-import 'dart:async';
 
 var list = ["Amarelo", "Laranja", "Vermelho", "Azul", "Verde", "Rosa"];
 
 class Home extends StatefulWidget {
   const Home({super.key});
+
+  static const routeName = "/home";
 
   @override
   State<Home> createState() => _HomeState();
@@ -41,6 +47,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    int userId = 0;
     boards = [];
     MaterialColor c;
     for (var v in boardsObj) {
@@ -66,14 +73,19 @@ class _HomeState extends State<Home> {
         default:
           c = Colors.yellow;
       }
-      boards.add(Card(
-        shadowColor: Colors.black12,
-        color: c,
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width - 50,
-          height: 125,
-          child: Text(v.name),
+      boards.add(GestureDetector(
+        child: Card(
+          shadowColor: Colors.black12,
+          color: c,
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width - 50,
+            height: 125,
+            child: Text(v.name),
+          ),
         ),
+        onTap: () {
+          Navigator.pushNamed(context, Planner.routeName, arguments: Id(v.id));
+        },
       ));
     }
 
@@ -96,7 +108,6 @@ class _HomeState extends State<Home> {
               showDialog(
                   context: context,
                   builder: (context) {
-                    _controllerBoardName.text = "";
                     return AlertDialog(
                       title: Text("Add board"),
                       content: SizedBox(
@@ -137,6 +148,7 @@ class _HomeState extends State<Home> {
                       actions: [
                         TextButton(
                             onPressed: () {
+                              _controllerBoardName.text = "";
                               Navigator.pop(context);
                             },
                             child: Text("Cancelar")),
@@ -164,8 +176,10 @@ class _HomeState extends State<Home> {
                               }
                               Task_Board tb =
                                   Task_Board(_controllerBoardName.text, color);
-                              boardsObj.add(tb);
+
                               tbh.insert(tb);
+                              boardsObj = [];
+                              InicializarOBJ();
                               _controllerBoardName.text = "";
                               setState(() {});
                               Navigator.pop(context);
@@ -175,12 +189,64 @@ class _HomeState extends State<Home> {
                     );
                   });
             },
-          )
+          ),
+          PopupMenuButton(
+              icon:
+                  Icon(Icons.menu), //don't specify icon if you want 3 dot menu
+              color: Colors.purple,
+              itemBuilder: (context) => [
+                    PopupMenuItem<int>(
+                      value: 0,
+                      child: Text(
+                        "Deslogar",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    PopupMenuItem<int>(
+                      value: 1,
+                      child: Text(
+                        "Pesquisar",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    PopupMenuItem<int>(
+                      value: 2,
+                      child: Text(
+                        "Tarefas Recentes",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    PopupMenuItem<int>(
+                      value: 3,
+                      child: Text(
+                        "Tarefas Concluídas",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ],
+              onSelected: (item) {
+                switch (item) {
+                  case 0:
+                    print(item);
+                    break;
+                  case 1:
+                    Navigator.pushNamed(context, Pesquisa.routeName, arguments: Id(userId));
+                    break;
+                  case 2:
+                    Navigator.pushNamed(context, TarefasRecentes.routeName, arguments: Id(userId));
+                    break;
+                  case 3:
+                    Navigator.pushNamed(context, TarefasConcluidas.routeName, arguments: Id(userId));
+                    break;
+                }
+              }),
         ],
       ),
       body: Center(
-        child: Column(
-          children: boards,
+        child: SingleChildScrollView(
+          child: Column(
+            children: boards,
+          ),
         ),
       ),
     );
