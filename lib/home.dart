@@ -22,7 +22,7 @@ class _HomeState extends State<Home> {
   List<Widget> boards = [];
   var boardsObj = [];
 
-  TaskBoardHelper tbh = TaskBoardHelper();
+  Helper helper = Helper();
 
   TextEditingController _controllerBoardName = TextEditingController();
 
@@ -34,7 +34,7 @@ class _HomeState extends State<Home> {
   }
 
   void InicializarOBJ() async {
-    var vr = await tbh.get();
+    var vr = await helper.get("task_board");
     for (var v in vr) {
       Task_Board tb = Task_Board.fromMap(v);
       boardsObj.add(tb);
@@ -46,7 +46,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    int userId = 0;
+    int userId = 1;
     boards = [];
     MaterialColor c;
     for (var v in boardsObj) {
@@ -86,7 +86,7 @@ class _HomeState extends State<Home> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(v.name),
-                    Text("Total: ${v.qtdTasks} (Valor fixo)")
+                    Text("Total: ${v.qtdTasks}")
                   ],
                 )),
           ),
@@ -96,6 +96,26 @@ class _HomeState extends State<Home> {
         },
       ));
     }
+
+    getQtd() async {
+      for (var v in boardsObj) {
+        String sql = """
+        SELECT count(*) FROM task, task_board, user
+        WHERE task.user_id = user.id AND task.board_id = task_board.id AND task_board.id = ${v.id} AND user.id = ${userId};
+""";
+        var l = await helper.select(sql);
+        int qtd = 0;
+        if (l != []) {
+          qtd = l[0]["count(*)"];
+        }
+        v.qtdTasks = qtd;
+      }
+      setState(() {
+        
+      });
+    }
+
+    getQtd();
 
     return Scaffold(
       appBar: AppBar(
@@ -113,6 +133,7 @@ class _HomeState extends State<Home> {
               color: Colors.purple,
             ),
             onTap: () {
+              //helper.insert("task", Task("title", userId, 1, "note", "date", "startTime", "endTime"));
               showDialog(
                   context: context,
                   builder: (context) {
@@ -185,7 +206,7 @@ class _HomeState extends State<Home> {
                               Task_Board tb =
                                   Task_Board(_controllerBoardName.text, color);
 
-                              tbh.insert(tb);
+                              helper.insert("task_board", tb);
                               boardsObj = [];
                               InicializarOBJ();
                               _controllerBoardName.text = "";

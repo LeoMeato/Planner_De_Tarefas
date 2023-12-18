@@ -1,4 +1,4 @@
-class Task extends Table {
+class Task extends Model {
   late String title;
   int? isCompleted;
   late int user_id;
@@ -43,7 +43,7 @@ class Task extends Table {
   }
 }
 
-class Task_Board extends Table {
+class Task_Board extends Model {
   late String name;
   late int color;
   int qtdTasks = 0;
@@ -66,7 +66,7 @@ class Task_Board extends Table {
   }
 }
 
-class User extends Table {
+class User extends Model {
   late String name;
   late String email;
   late String password;
@@ -94,7 +94,7 @@ class User extends Table {
   }
 }
 
-abstract class Table {
+abstract class Model {
   int? id;
   Map<String, dynamic> toMap();
 }

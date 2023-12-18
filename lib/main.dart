@@ -1,4 +1,6 @@
+import 'package:Planner_De_Tarefas/helper.dart';
 import 'package:Planner_De_Tarefas/login.dart';
+import 'package:Planner_De_Tarefas/model.dart';
 import 'package:Planner_De_Tarefas/pesquisa.dart';
 import 'package:Planner_De_Tarefas/planner.dart';
 import 'package:Planner_De_Tarefas/tarefas_concluidas.dart';
@@ -11,12 +13,14 @@ void main() {
   runApp(MaterialApp(
     title: 'Planner de Tarefas',
     initialRoute: "/",
-    routes: {Login.routeName:(context) => Login(),
-    Home.routeName: (context) => Home(),
-    Planner.routeName:(context) => Planner(),
-    Pesquisa.routeName:(context) => Pesquisa(),
-    TarefasRecentes.routeName:(context) => TarefasRecentes(),
-    TarefasConcluidas.routeName:(context) => TarefasConcluidas(),},
+    routes: {
+      Login.routeName: (context) => Login(),
+      Home.routeName: (context) => Home(),
+      Planner.routeName: (context) => Planner(),
+      Pesquisa.routeName: (context) => Pesquisa(),
+      TarefasRecentes.routeName: (context) => TarefasRecentes(),
+      TarefasConcluidas.routeName: (context) => TarefasConcluidas(),
+    },
     home: Home(),
     debugShowCheckedModeBanner: false,
   ));
