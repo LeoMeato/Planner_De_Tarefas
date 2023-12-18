@@ -8,7 +8,7 @@ class Helper {
 
   initDb() async {
     final dbPath = await getDatabasesPath();
-    final path = join(dbPath, "planner.db");
+    final path = join(dbPath, "planta.db");
 
     Database db = await openDatabase(path, version: 1, onCreate: _onCreateDb);
 

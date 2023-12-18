@@ -29,12 +29,13 @@ class _HomeState extends State<Home> {
   int color = 0;
   @override
   void initState() {
-    super.initState();
+    helper.initDb();
     InicializarOBJ();
+    super.initState();
   }
 
   void InicializarOBJ() async {
-    //await helper.tmp();
+    await helper.tmp();
     var vr = await helper.get("task_board");
     for (var v in vr) {
       Task_Board tb = Task_Board.fromMap(v);
