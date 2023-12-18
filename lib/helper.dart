@@ -16,8 +16,8 @@ class Helper {
   }
 
   void _onCreateDb(Database db, int version) {
-    String sql = """
-    CREATE TABLE task(
+    String sql1 = """
+    CREATE TABLE if not exists task(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
     board_id INTEGER NOT NULL,
@@ -29,13 +29,14 @@ class Helper {
     isCompleted INTEGER,
     FOREIGN KEY(user_id) REFERENCES user(id),
     FOREIGN KEY(board_id) REFERENCES task_board(id)
-);
-CREATE TABLE task_board(
+);""";
+    String sql2 = """
+CREATE TABLE if not exists task_board(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name VARCHAR NOT NULL,
     color INTEGER NOT NULL
-);
-CREATE TABLE user(
+);""";
+    String sql3 = """CREATE TABLE if not exists user(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name VARCHAR NOT NULL,
     email VARCHAR NOT NULL,
@@ -43,7 +44,9 @@ CREATE TABLE user(
 );
     """;
 
-    db.execute(sql);
+    db.execute(sql1);
+    db.execute(sql2);
+    db.execute(sql3);
   }
 
   Future<Database?> get db async {
@@ -98,7 +101,7 @@ CREATE TABLE user(
 
   tmp() async {
     var database = await db;
-    String sql = """
+    String sql1 = """
     CREATE TABLE if not exists task(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
@@ -111,13 +114,14 @@ CREATE TABLE user(
     isCompleted INTEGER,
     FOREIGN KEY(user_id) REFERENCES user(id),
     FOREIGN KEY(board_id) REFERENCES task_board(id)
-);
+);""";
+    String sql2 = """
 CREATE TABLE if not exists task_board(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name VARCHAR NOT NULL,
     color INTEGER NOT NULL
-);
-CREATE TABLE if not exists user(
+);""";
+    String sql3 = """CREATE TABLE if not exists user(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name VARCHAR NOT NULL,
     email VARCHAR NOT NULL,
@@ -125,7 +129,9 @@ CREATE TABLE if not exists user(
 );
     """;
 
-    database!.execute(sql);
+    database!.execute(sql1);
+    database!.execute(sql2);
+    database!.execute(sql3);
   }
 }
 /*
