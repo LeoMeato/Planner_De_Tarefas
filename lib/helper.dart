@@ -95,6 +95,38 @@ CREATE TABLE user(
 
     return results;
   }
+
+  tmp() async {
+    var database = await db;
+    String sql = """
+    CREATE TABLE if not exists task(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    board_id INTEGER NOT NULL,
+    title VARCHAR NOT NULL,
+    note TEXT NOT NULL,
+    date VARCHAR NOT NULL,
+    startTime VARCHAR NOT NULL,
+    endTime VARCHAR NOT NULL,
+    isCompleted INTEGER,
+    FOREIGN KEY(user_id) REFERENCES user(id),
+    FOREIGN KEY(board_id) REFERENCES task_board(id)
+);
+CREATE TABLE if not exists task_board(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name VARCHAR NOT NULL,
+    color INTEGER NOT NULL
+);
+CREATE TABLE if not exists user(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name VARCHAR NOT NULL,
+    email VARCHAR NOT NULL,
+    password VARCHAR NOT NULL
+);
+    """;
+
+    database!.execute(sql);
+  }
 }
 /*
 

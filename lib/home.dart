@@ -30,7 +30,12 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+    InicializarBD();
     InicializarOBJ();
+  }
+
+  void InicializarBD() async {
+    helper.tmp();
   }
 
   void InicializarOBJ() async {
@@ -84,10 +89,7 @@ class _HomeState extends State<Home> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(v.name),
-                    Text("Total: ${v.qtdTasks}")
-                  ],
+                  children: [Text(v.name), Text("Total: ${v.qtdTasks}")],
                 )),
           ),
         ),
@@ -110,9 +112,7 @@ class _HomeState extends State<Home> {
         }
         v.qtdTasks = qtd;
       }
-      setState(() {
-        
-      });
+      setState(() {});
     }
 
     getQtd();
