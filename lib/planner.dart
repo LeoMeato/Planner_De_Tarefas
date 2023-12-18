@@ -14,12 +14,12 @@ class Planner extends StatefulWidget {
 
 class _PlannerState extends State<Planner> {
   @override
+  DateTime _focusedDay = DateTime.now();
+  DateTime? _selectedDay;
+  CalendarFormat _calendarFormat = CalendarFormat.month;
   Widget build(BuildContext context) {
     var args = ModalRoute.of(context)!.settings.arguments as Id;
     int taskBoardId = args.id;
-    DateTime _focusedDay = DateTime.now();
-    DateTime? _selectedDay;
-    CalendarFormat _calendarFormat = CalendarFormat.month;
     return Scaffold(appBar: AppBar(
       toolbarHeight: 40, 
       backgroundColor: Colors.white, 
@@ -53,7 +53,6 @@ class _PlannerState extends State<Planner> {
                 }
               },
               onPageChanged: (focusedDay) {
-                // No need to call `setState()` here
                 _focusedDay = focusedDay;
               },
 ));
