@@ -1,4 +1,5 @@
 class Id {
   int id;
-  Id(this.id);
+  int id2;
+  Id(this.id, {this.id2 = -1});
 }

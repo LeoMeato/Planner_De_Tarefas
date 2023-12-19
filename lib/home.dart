@@ -92,7 +92,7 @@ class _HomeState extends State<Home> {
           ),
         ),
         onTap: () {
-          Navigator.pushNamed(context, Planner.routeName, arguments: Id(v.id));
+          Navigator.pushNamed(context, Planner.routeName, arguments: Id(v.id, id2: userId));
         },
       ));
     }
