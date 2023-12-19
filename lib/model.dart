@@ -9,8 +9,7 @@ class Task extends Model {
   late String endTime;
 
   Task(this.title, this.user_id, this.board_id, this.note, this.date,
-      this.startTime, this.endTime,
-      {isCompleted = 0});
+      this.startTime, this.endTime, this.isCompleted);
 
   Task.fromMap(Map map) {
     this.id = map["id"];

@@ -6,6 +6,7 @@ import 'package:Planner_De_Tarefas/tarefas_recentes.dart';
 import 'package:flutter/material.dart';
 import 'package:Planner_De_Tarefas/helper.dart';
 import 'package:Planner_De_Tarefas/model.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 var list = ["Amarelo", "Laranja", "Vermelho", "Azul", "Verde", "Rosa"];
 
@@ -274,7 +275,7 @@ class _HomeState extends State<Home> {
       body: Center(
         child: SingleChildScrollView(
           child: Column(
-            children: boards,
+            children: boards
           ),
         ),
       ),

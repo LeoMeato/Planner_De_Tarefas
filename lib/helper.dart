@@ -63,11 +63,22 @@ CREATE TABLE if not exists task_board(
     return result;
   }
 
+
+
   Future<int> update(String tableName, Model t) async {
     var database = await db;
 
     int result = await database!
         .update(tableName, t.toMap(), where: "id=?", whereArgs: [t.id]);
+
+    return result;
+  }
+
+  Future<int> updateTask(String tableName, Model t, int id) async {
+    var database = await db;
+
+    int result = await database!
+        .update(tableName, t.toMap(), where: "id=?", whereArgs: [id]);
 
     return result;
   }
