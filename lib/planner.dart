@@ -231,6 +231,12 @@ class _PlannerState extends State<Planner> {
 
     return Scaffold(
       appBar: AppBar(
+          leading: GestureDetector(
+            child: Icon(Icons.arrow_back, color: Colors.purple,),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
           toolbarHeight: 40,
           backgroundColor: Colors.white,
           centerTitle: true,

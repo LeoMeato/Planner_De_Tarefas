@@ -13,7 +13,6 @@ class TarefasConcluidas extends StatefulWidget {
 }
 
 class _TarefasConcluidasState extends State<TarefasConcluidas> {
-  TextEditingController _controllerPesquisa = TextEditingController();
   var tasksObj = [];
   List<Widget> tasks = [];
   Helper helper = Helper();

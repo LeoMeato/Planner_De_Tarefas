@@ -102,14 +102,14 @@ class _HomeState extends State<Home> {
     getQtd() async {
       for (var v in boardsObj) {
         String sql = """
-        SELECT count(*) FROM task, task_board, user
-        WHERE task.user_id = user.id AND task.board_id = task_board.id AND task_board.id = ${v.id} AND user.id = ${userId};
+        SELECT count(*) FROM task
+        WHERE task.user_id = ${userId} AND task.board_id = ${v.id};
 """;
         var l = await helper.select(sql);
         int qtd = 0;
-        if (l != []) {
-          qtd = l[0]["count(*)"];
-        }
+
+        qtd = l[0]["count(*)"];
+
         v.qtdTasks = qtd;
       }
       setState(() {});
@@ -123,7 +123,7 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
-          "Task Board",
+          "Dashboard",
           style: TextStyle(color: Colors.black),
         ),
         actions: [
