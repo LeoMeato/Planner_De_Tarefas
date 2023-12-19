@@ -92,7 +92,9 @@ class _HomeState extends State<Home> {
           ),
         ),
         onTap: () {
-          Navigator.pushNamed(context, Planner.routeName, arguments: Id(v.id, id2: userId));
+          print(v.id);
+          Navigator.pushNamed(context, Planner.routeName,
+              arguments: Id(v.id, id2: userId));
         },
       ));
     }
@@ -131,7 +133,7 @@ class _HomeState extends State<Home> {
               color: Colors.purple,
             ),
             onTap: () {
-              //helper.insert("task", Task("title", userId, 1, "note", "date", "startTime", "endTime"));
+              //helper.insert("task", Task("titleB", userId, 1, "note", "21/12/2023", "10:00", "11:00"));
               showDialog(
                   context: context,
                   builder: (context) {
@@ -157,9 +159,8 @@ class _HomeState extends State<Home> {
                                 color: Colors.deepPurpleAccent,
                               ),
                               onChanged: (String? value) {
-                                setState(() {
-                                  dropdownValue = value!;
-                                });
+                                dropdownValue = value!;
+                                setState(() {});
                               },
                               items: list.map<DropdownMenuItem<String>>(
                                   (String value) {
@@ -274,9 +275,7 @@ class _HomeState extends State<Home> {
       ),
       body: Center(
         child: SingleChildScrollView(
-          child: Column(
-            children: boards
-          ),
+          child: Column(children: boards),
         ),
       ),
     );

@@ -27,8 +27,8 @@ class _PlannerState extends State<Planner> {
   int boardID = 1;
 
   List<Widget> empty = [];
-  List<Widget> boards = [];
-  var boardsObj = [];
+  List<Widget> tasks = [];
+  var tasksObj = [];
 
   Helper helper = Helper();
 
@@ -53,7 +53,7 @@ class _PlannerState extends State<Planner> {
     for (var v in vr) {
       Task tb = Task.fromMap(v);
       if (tb.user_id == userID && tb.board_id == boardID) {
-        boardsObj.add(tb);
+        tasksObj.add(tb);
       }
     }
     setState(() {});
@@ -63,9 +63,9 @@ class _PlannerState extends State<Planner> {
     var args = ModalRoute.of(context)!.settings.arguments as Id;
     int taskBoardId = args.id;
     int userId = args.id2;
-    boards = [];
+    tasks = [];
 
-    for (var v in boardsObj) {
+    for (var v in tasksObj) {
       String dataDia =
           "${_focusedDay.day}/${_focusedDay.month}/${_focusedDay.year}";
       print(dataDia);
@@ -76,7 +76,7 @@ class _PlannerState extends State<Planner> {
       if (v.isCompleted == 1) {
         cor = Colors.green;
       }
-      boards.add(
+      tasks.add(
         GestureDetector(
           child: Card(
             shadowColor: Colors.black12,
@@ -180,7 +180,7 @@ class _PlannerState extends State<Planner> {
                       TextButton(
                           onPressed: () {
                             helper.delete("task", v.id);
-                            boardsObj = [];
+                            tasksObj = [];
                             InicializarOBJ();
                             _controllerName.text = "";
                             _controllerDate.text = "";
@@ -206,11 +206,11 @@ class _PlannerState extends State<Planner> {
                                 _controllerDate.text,
                                 _controllerStart.text,
                                 _controllerEnd.text,
-                                v.isCompleted);
+                                isCompleted: v.isCompleted);
 
                             //helper.insert("task", Task("title", userId, 1, "note", "date", "startTime", "endTime"));
                             helper.updateTask("task", t, v.id);
-                            boardsObj = [];
+                            tasksObj = [];
                             InicializarOBJ();
                             _controllerName.text = "";
                             _controllerDate.text = "";
@@ -316,13 +316,13 @@ class _PlannerState extends State<Planner> {
                                     _controllerDate.text,
                                     _controllerStart.text,
                                     _controllerEnd.text,
-                                    0);
+                                    isCompleted: 0);
 
                                 //helper.insert("task", Task("title", userId, 1, "note", "date", "startTime", "endTime"));
                                 helper.insert("task", t);
                                 print(t);
                                 print("adicionou");
-                                boardsObj = [];
+                                tasksObj = [];
                                 InicializarOBJ();
                                 _controllerName.text = "";
                                 _controllerDate.text = "";
@@ -372,7 +372,7 @@ class _PlannerState extends State<Planner> {
                   },
                 )
               ] +
-              boards,
+              tasks,
         ),
       ),
     );
