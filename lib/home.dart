@@ -137,84 +137,87 @@ class _HomeState extends State<Home> {
               showDialog(
                   context: context,
                   builder: (context) {
-                    return AlertDialog(
-                      title: Text("Add board"),
-                      content: SizedBox(
-                        width: MediaQuery.of(context).size.width - 100,
-                        height: 120,
-                        child: Column(
-                          children: [
-                            TextField(
-                                controller: _controllerBoardName,
-                                decoration:
-                                    InputDecoration(labelText: "Board name"),
-                                onChanged: (text) {}),
-                            DropdownButton<String>(
-                              isExpanded: true,
-                              value: dropdownValue,
-                              icon: const Icon(Icons.arrow_downward),
-                              style: const TextStyle(color: Colors.deepPurple),
-                              underline: Container(
-                                height: 3,
-                                color: Colors.deepPurpleAccent,
+                    return StatefulBuilder(builder: (context, setState) {
+                      return AlertDialog(
+                        title: Text("Add board"),
+                        content: SizedBox(
+                          width: MediaQuery.of(context).size.width - 100,
+                          height: 120,
+                          child: Column(
+                            children: [
+                              TextField(
+                                  controller: _controllerBoardName,
+                                  decoration:
+                                      InputDecoration(labelText: "Board name"),
+                                  onChanged: (text) {}),
+                              DropdownButton<String>(
+                                isExpanded: true,
+                                value: dropdownValue,
+                                icon: const Icon(Icons.arrow_downward),
+                                style:
+                                    const TextStyle(color: Colors.deepPurple),
+                                underline: Container(
+                                  height: 3,
+                                  color: Colors.deepPurpleAccent,
+                                ),
+                                onChanged: (String? value) {
+                                  dropdownValue = value!;
+                                  setState(() {});
+                                },
+                                items: list.map<DropdownMenuItem<String>>(
+                                    (String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
                               ),
-                              onChanged: (String? value) {
-                                dropdownValue = value!;
-                                setState(() {});
-                              },
-                              items: list.map<DropdownMenuItem<String>>(
-                                  (String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
-                                );
-                              }).toList(),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                      actions: [
-                        TextButton(
-                            onPressed: () {
-                              _controllerBoardName.text = "";
-                              Navigator.pop(context);
-                            },
-                            child: Text("Cancelar")),
-                        TextButton(
-                            onPressed: () {
-                              switch (dropdownValue) {
-                                case "Amarelo":
-                                  color = 0;
-                                  break;
-                                case "Laranja":
-                                  color = 1;
-                                  break;
-                                case "Vermelho":
-                                  color = 2;
-                                  break;
-                                case "Azul":
-                                  color = 3;
-                                  break;
-                                case "Verde":
-                                  color = 4;
-                                  break;
-                                case "Rosa":
-                                  color = 5;
-                                  break;
-                              }
-                              Task_Board tb =
-                                  Task_Board(_controllerBoardName.text, color);
+                        actions: [
+                          TextButton(
+                              onPressed: () {
+                                _controllerBoardName.text = "";
+                                Navigator.pop(context);
+                              },
+                              child: Text("Cancelar")),
+                          TextButton(
+                              onPressed: () {
+                                switch (dropdownValue) {
+                                  case "Amarelo":
+                                    color = 0;
+                                    break;
+                                  case "Laranja":
+                                    color = 1;
+                                    break;
+                                  case "Vermelho":
+                                    color = 2;
+                                    break;
+                                  case "Azul":
+                                    color = 3;
+                                    break;
+                                  case "Verde":
+                                    color = 4;
+                                    break;
+                                  case "Rosa":
+                                    color = 5;
+                                    break;
+                                }
+                                Task_Board tb = Task_Board(
+                                    _controllerBoardName.text, color);
 
-                              helper.insert("task_board", tb);
-                              boardsObj = [];
-                              InicializarOBJ();
-                              _controllerBoardName.text = "";
-                              setState(() {});
-                              Navigator.pop(context);
-                            },
-                            child: Text("Criar")),
-                      ],
-                    );
+                                helper.insert("task_board", tb);
+                                boardsObj = [];
+                                InicializarOBJ();
+                                _controllerBoardName.text = "";
+                                setState(() {});
+                                Navigator.pop(context);
+                              },
+                              child: Text("Criar")),
+                        ],
+                      );
+                    });
                   });
             },
           ),
