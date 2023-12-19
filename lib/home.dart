@@ -11,7 +11,8 @@ import 'package:table_calendar/table_calendar.dart';
 var list = ["Amarelo", "Laranja", "Vermelho", "Azul", "Verde", "Rosa"];
 
 class Home extends StatefulWidget {
-  const Home({super.key});
+  const Home({required this.user, super.key});
+  final String user;
 
   static const routeName = "/home";
 

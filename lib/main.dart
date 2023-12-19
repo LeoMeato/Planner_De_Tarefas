@@ -23,13 +23,13 @@ void main() {
     initialRoute: "/",
     routes: {
       Login.routeName: (context) => Login(),
-      Home.routeName: (context) => Home(),
+      //Home.routeName: (context) => Home(),
       Planner.routeName: (context) => Planner(),
       Pesquisa.routeName: (context) => Pesquisa(),
       TarefasRecentes.routeName: (context) => TarefasRecentes(),
       TarefasConcluidas.routeName: (context) => TarefasConcluidas(),
     },
-    home: Home(),
+    home: Login(),
     debugShowCheckedModeBanner: false,
   ));
 }

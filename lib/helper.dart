@@ -144,7 +144,31 @@ CREATE TABLE if not exists task_board(
     database!.execute(sql2);
     database!.execute(sql3);
   }
+
+  Future<void> saveUser(String name, String email, String password) async {
+    var database = await db;
+
+    //nao usei o model 
+    Map<String, dynamic> userData = {
+      "name": name,
+      "email": email,
+      "password": password
+    };
+
+    int id = await database!.insert("user", userData);
+  }
+
+  Future<bool> usuarioAtivo(String user, String password) async {
+    var database = await db;
+
+    String sql = "SELECT id FROM user WHERE email = '$user' and password = '$password' ";
+    List? users = await database!.rawQuery(sql);
+
+    if (users.isEmpty) {return false;} 
+    else {return true;}
+  }
 }
+
 /*
 
 class TaskBoardHelper {
