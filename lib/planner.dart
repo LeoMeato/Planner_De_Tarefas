@@ -19,16 +19,13 @@ class _PlannerState extends State<Planner> {
   @override
   void initState() {
     helper.initDb();
-    InicializarOBJ();
     super.initState();
   }
-
-  int userID = 1;
-  int boardID = 1;
 
   List<Widget> empty = [];
   List<Widget> tasks = [];
   var tasksObj = [];
+  var tasksID = [];
 
   Helper helper = Helper();
 
@@ -47,28 +44,30 @@ class _PlannerState extends State<Planner> {
   int color = 0;
   List<dynamic> totalList = [];
 
-  void InicializarOBJ() async {
-    await helper.tmp();
-    var vr = await helper.get("task");
-    for (var v in vr) {
-      Task tb = Task.fromMap(v);
-      if (tb.user_id == userID && tb.board_id == boardID) {
-        tasksObj.add(tb);
-      }
-    }
-    setState(() {});
-  }
 
   Widget build(BuildContext context) {
+
+
     var args = ModalRoute.of(context)!.settings.arguments as Id;
     int taskBoardId = args.id;
     int userId = args.id2;
+    void InicializarOBJ() async {
+      await helper.tmp();
+      var vr = await helper.get("task");
+      for (var v in vr) {
+        Task tb = Task.fromMap(v);
+        if (tb.user_id == userId && tb.board_id == taskBoardId && !tasksID.contains(tb.id)) {
+          tasksObj.add(tb);
+          tasksID.add(tb.id);
+        }
+      }
+      setState(() {});
+    }
     tasks = [];
 
     for (var v in tasksObj) {
       String dataDia =
           "${_focusedDay.day}/${_focusedDay.month}/${_focusedDay.year}";
-      print(dataDia);
       var cor = Color.fromARGB(255, 219, 90, 90);
       if (v.date == dataDia) {
         cor = Color.fromARGB(255, 86, 98, 209);
@@ -200,8 +199,8 @@ class _PlannerState extends State<Planner> {
                             }
                             Task t = Task(
                                 _controllerName.text,
-                                userID,
-                                boardID,
+                                userId,
+                                taskBoardId,
                                 _controllerNote.text,
                                 _controllerDate.text,
                                 _controllerStart.text,
@@ -316,8 +315,8 @@ class _PlannerState extends State<Planner> {
                               onPressed: () {
                                 Task t = Task(
                                     _controllerName.text,
-                                    userID,
-                                    boardID,
+                                    userId,
+                                    taskBoardId,
                                     _controllerNote.text,
                                     _controllerDate.text,
                                     _controllerStart.text,
@@ -326,8 +325,6 @@ class _PlannerState extends State<Planner> {
 
                                 //helper.insert("task", Task("title", userId, 1, "note", "date", "startTime", "endTime"));
                                 helper.insert("task", t);
-                                print(t);
-                                print("adicionou");
                                 tasksObj = [];
                                 InicializarOBJ();
                                 _controllerName.text = "";
@@ -359,7 +356,6 @@ class _PlannerState extends State<Planner> {
                   },
                   onDaySelected: (selectedDay, focusedDay) {
                     if (!isSameDay(_selectedDay, selectedDay)) {
-                      print(_selectedDay);
                       setState(() {
                         _selectedDay = selectedDay;
                         _focusedDay = focusedDay;
@@ -378,7 +374,12 @@ class _PlannerState extends State<Planner> {
                   },
                 )
               ] +
-              tasks,
+              tasks + [Center(
+                child: ElevatedButton(child: Text("Carregar"),
+                onPressed: () {
+                  InicializarOBJ();
+                },)
+              )],
         ),
       ),
     );
