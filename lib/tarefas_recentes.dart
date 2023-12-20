@@ -28,158 +28,175 @@ class _TarefasRecentesState extends State<TarefasRecentes> {
     String sql = """
     SELECT * FROM task
     WHERE task.user_id = ${uid}
-    ORDER BY id DESC;
 """;
     var l = await helper.select(sql);
     tasksObj = [];
-    int i = 0;
     for (var v in l) {
       tasksObj.add(Task.fromMap(v));
-      i++;
-      if (i >= 10) break;
     }
   }
 
   atualiza(uid) async {
     await atualizaObj(uid);
     tasks = [];
+    DateTime agora = DateTime.now();
     for (var v in tasksObj) {
-      print("aqui");
-      tasks.add(GestureDetector(
-        child: Container(
-          height: 50,
-          //color: Colors.amber[600],
-          child: Center(
-              child: Text(
-            '${v.title} ${v.date} ${v.startTime}-${v.endTime}',
-            style: TextStyle(fontSize: 15),
-          )),
-        ),
-        onTap: () {
-          _controllerName.text = v.title;
-          _controllerDate.text = v.date;
-          _controllerEnd.text = v.endTime;
-          _controllerNote.text = v.note;
-          _controllerStart.text = v.startTime;
+      var data = v.date.split("/");
+      var hora = v.startTime.split(":");
+      var tempo = [
+        int.parse(data[0]),
+        int.parse(data[1]),
+        int.parse(data[2]),
+        int.parse(hora[0]),
+        int.parse(hora[1])
+      ];
+      DateTime d = DateTime(
+        tempo[2],
+        tempo[1],
+        tempo[0],
+        tempo[3],
+        tempo[4],
+      );
+      Duration dif = d.difference(agora);
+      print("dif ${dif.inDays}");
+      if (d.isAfter(agora) && dif.inDays < 7) {
+        tasks.add(GestureDetector(
+          child: Container(
+            height: 50,
+            //color: Colors.amber[600],
+            child: Center(
+                child: Text(
+              '${v.title} ${v.date} ${v.startTime}-${v.endTime}',
+              style: TextStyle(fontSize: 15),
+            )),
+          ),
+          onTap: () {
+            _controllerName.text = v.title;
+            _controllerDate.text = v.date;
+            _controllerEnd.text = v.endTime;
+            _controllerNote.text = v.note;
+            _controllerStart.text = v.startTime;
 
-          if (v.isCompleted == 1) {
-            _controllerCompleted.text = "1";
-          } else {
-            _controllerCompleted.text = "0";
-          }
-          showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  title: Text("Update Task"),
-                  content: SizedBox(
-                    width: MediaQuery.of(context).size.width - 100,
-                    height: 370,
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          TextField(
-                            controller: _controllerName,
-                            decoration: InputDecoration(labelText: "Task name"),
-                            onChanged: (text) {},
-                            //       style: TextStyle(fontSize: 13),
-                          ),
-                          TextField(
-                            controller: _controllerNote,
-                            decoration: InputDecoration(labelText: "Note"),
-                            onChanged: (text) {},
-                            //       style: TextStyle(fontSize: 13),
-                          ),
-                          TextField(
-                            controller: _controllerDate,
-                            decoration:
-                                InputDecoration(labelText: "Date (DD/MM/YYYY)"),
-                            onChanged: (text) {},
-                            //       style: TextStyle(fontSize: 13),
-                          ),
-                          TextField(
-                            controller: _controllerStart,
-                            decoration: InputDecoration(
-                                labelText: "Start Time (HH:MM)"),
-                            onChanged: (text) {},
-                            //       style: TextStyle(fontSize: 13),
-                          ),
-                          TextField(
-                            controller: _controllerEnd,
-                            decoration:
-                                InputDecoration(labelText: "End Time (HH:MM)"),
-                            onChanged: (text) {},
-                            //       style: TextStyle(fontSize: 13),
-                          ),
-                          TextField(
-                            controller: _controllerCompleted,
-                            decoration: InputDecoration(
-                                labelText: "Completed(1) or Not(0)"),
-                            onChanged: (text) {},
-                          )
-                        ],
+            if (v.isCompleted == 1) {
+              _controllerCompleted.text = "1";
+            } else {
+              _controllerCompleted.text = "0";
+            }
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text("Update Task"),
+                    content: SizedBox(
+                      width: MediaQuery.of(context).size.width - 100,
+                      height: 370,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            TextField(
+                              controller: _controllerName,
+                              decoration:
+                                  InputDecoration(labelText: "Task name"),
+                              onChanged: (text) {},
+                              //       style: TextStyle(fontSize: 13),
+                            ),
+                            TextField(
+                              controller: _controllerNote,
+                              decoration: InputDecoration(labelText: "Note"),
+                              onChanged: (text) {},
+                              //       style: TextStyle(fontSize: 13),
+                            ),
+                            TextField(
+                              controller: _controllerDate,
+                              decoration: InputDecoration(
+                                  labelText: "Date (DD/MM/YYYY)"),
+                              onChanged: (text) {},
+                              //       style: TextStyle(fontSize: 13),
+                            ),
+                            TextField(
+                              controller: _controllerStart,
+                              decoration: InputDecoration(
+                                  labelText: "Start Time (HH:MM)"),
+                              onChanged: (text) {},
+                              //       style: TextStyle(fontSize: 13),
+                            ),
+                            TextField(
+                              controller: _controllerEnd,
+                              decoration: InputDecoration(
+                                  labelText: "End Time (HH:MM)"),
+                              onChanged: (text) {},
+                              //       style: TextStyle(fontSize: 13),
+                            ),
+                            TextField(
+                              controller: _controllerCompleted,
+                              decoration: InputDecoration(
+                                  labelText: "Completed(1) or Not(0)"),
+                              onChanged: (text) {},
+                            )
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  actions: [
-                    TextButton(
-                        onPressed: () {
-                          _controllerName.text = "";
-                          _controllerDate.text = "";
-                          _controllerNote.text = "";
-                          _controllerEnd.text = "";
-                          _controllerStart.text = "";
-                          Navigator.pop(context);
-                        },
-                        child: Text("Cancel")),
-                    TextButton(
-                        onPressed: () {
-                          helper.delete("task", v.id);
-                          tasksObj = [];
-                          atualiza(uid);
-                          _controllerName.text = "";
-                          _controllerDate.text = "";
-                          _controllerNote.text = "";
-                          _controllerEnd.text = "";
-                          _controllerStart.text = "";
-                          setState(() {});
-                          Navigator.pop(context);
-                        },
-                        child: Text("Remove")),
-                    TextButton(
-                        onPressed: () {
-                          if (_controllerCompleted.text == "1") {
-                            v.isCompleted = 1;
-                          } else {
-                            v.isCompleted = 0;
-                          }
-                          Task t = Task(
-                              _controllerName.text,
-                              v.user_id,
-                              v.board_id,
-                              _controllerNote.text,
-                              _controllerDate.text,
-                              _controllerStart.text,
-                              _controllerEnd.text,
-                              isCompleted: v.isCompleted);
+                    actions: [
+                      TextButton(
+                          onPressed: () {
+                            _controllerName.text = "";
+                            _controllerDate.text = "";
+                            _controllerNote.text = "";
+                            _controllerEnd.text = "";
+                            _controllerStart.text = "";
+                            Navigator.pop(context);
+                          },
+                          child: Text("Cancel")),
+                      TextButton(
+                          onPressed: () {
+                            helper.delete("task", v.id);
+                            tasksObj = [];
+                            atualiza(uid);
+                            _controllerName.text = "";
+                            _controllerDate.text = "";
+                            _controllerNote.text = "";
+                            _controllerEnd.text = "";
+                            _controllerStart.text = "";
+                            setState(() {});
+                            Navigator.pop(context);
+                          },
+                          child: Text("Remove")),
+                      TextButton(
+                          onPressed: () {
+                            if (_controllerCompleted.text == "1") {
+                              v.isCompleted = 1;
+                            } else {
+                              v.isCompleted = 0;
+                            }
+                            Task t = Task(
+                                _controllerName.text,
+                                v.user_id,
+                                v.board_id,
+                                _controllerNote.text,
+                                _controllerDate.text,
+                                _controllerStart.text,
+                                _controllerEnd.text,
+                                isCompleted: v.isCompleted);
 
-                          helper.updateTask("task", t, v.id);
-                          tasksObj = [];
-                          atualiza(uid);
-                          _controllerName.text = "";
-                          _controllerDate.text = "";
-                          _controllerNote.text = "";
-                          _controllerEnd.text = "";
-                          _controllerStart.text = "";
-                          setState(() {});
-                          Navigator.pop(context);
-                        },
-                        child: Text("Update")),
-                  ],
-                );
-              });
-        },
-      ));
+                            helper.updateTask("task", t, v.id);
+                            tasksObj = [];
+                            atualiza(uid);
+                            _controllerName.text = "";
+                            _controllerDate.text = "";
+                            _controllerNote.text = "";
+                            _controllerEnd.text = "";
+                            _controllerStart.text = "";
+                            setState(() {});
+                            Navigator.pop(context);
+                          },
+                          child: Text("Update")),
+                    ],
+                  );
+                });
+          },
+        ));
+      }
     }
     setState(() {});
   }
@@ -195,7 +212,7 @@ class _TarefasRecentesState extends State<TarefasRecentes> {
         backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
-          "Tarefas Concluídas",
+          "Tarefas Recentes",
           style: TextStyle(color: Colors.black),
         ),
         leading: GestureDetector(
