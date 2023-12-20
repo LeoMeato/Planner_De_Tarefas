@@ -172,7 +172,7 @@ CREATE TABLE if not exists task_board(
     var database = await db;
     String sql = "SELECT id FROM user WHERE email = '$user' and password = '$password' ";
     List? users = await database!.rawQuery(sql);
-    int id = users[0];
+    int id = int.parse(users[0]);
     return id;
   }
 }
