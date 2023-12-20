@@ -24,7 +24,7 @@ class _PlannerState extends State<Planner> {
 
   List<Widget> empty = [];
   List<Widget> tasks = [];
-  var tasksObj = [];
+  List<Task> tasksObj = [];
   var tasksID = [];
 
   Helper helper = Helper();
@@ -44,28 +44,29 @@ class _PlannerState extends State<Planner> {
   int color = 0;
   List<dynamic> totalList = [];
 
-
   Widget build(BuildContext context) {
-
-
     var args = ModalRoute.of(context)!.settings.arguments as Id;
     int taskBoardId = args.id;
     int userId = args.id2;
-    void InicializarOBJ() async {
+    void InicializarOBJ() async {      
       await helper.tmp();
       var vr = await helper.get("task");
-      for (var v in vr) {
+      setState(() {
+        tasksObj = [];
+        tasksID = [];
+        for (var v in vr) {
         Task tb = Task.fromMap(v);
-        if (tb.user_id == userId && tb.board_id == taskBoardId && !tasksID.contains(tb.id)) {
+        if (tb.user_id == userId &&
+            tb.board_id == taskBoardId &&
+            !tasksID.contains(tb.id)) {
           tasksObj.add(tb);
           tasksID.add(tb.id);
         }
       }
-      setState(() {});
+      });
     }
-    tasks = [];
-
-    for (var v in tasksObj) {
+    
+    void insere_task(Task v){ 
       String dataDia =
           "${_focusedDay.day}/${_focusedDay.month}/${_focusedDay.year}";
       var cor = Color.fromARGB(255, 219, 90, 90);
@@ -134,25 +135,46 @@ class _PlannerState extends State<Planner> {
                               onChanged: (text) {},
                               //       style: TextStyle(fontSize: 13),
                             ),
-                            TextField(
+                            TextFormField(
                               controller: _controllerDate,
                               decoration: InputDecoration(
                                   labelText: "Date (DD/MM/YYYY)"),
                               onChanged: (text) {},
+                              autovalidateMode: AutovalidateMode.always,
+                              validator: (value) {
+                                return (value!.contains(RegExp(
+                                        r'^[0-9]{1,2}/[0-9]{1,2}/[0-9]{4}$')))
+                                    ? null
+                                    : 'Type a valid date';
+                              },
                               //       style: TextStyle(fontSize: 13),
                             ),
-                            TextField(
+                            TextFormField(
                               controller: _controllerStart,
                               decoration: InputDecoration(
                                   labelText: "Start Time (HH:MM)"),
                               onChanged: (text) {},
+                              autovalidateMode: AutovalidateMode.always,
+                              validator: (value) {
+                                return (value!.contains(
+                                        RegExp(r'^[0-9]{1,2}:[0-9]{1,2}$')))
+                                    ? null
+                                    : 'Type a valid time';
+                              },
                               //       style: TextStyle(fontSize: 13),
                             ),
-                            TextField(
+                            TextFormField(
                               controller: _controllerEnd,
                               decoration: InputDecoration(
                                   labelText: "End Time (HH:MM)"),
                               onChanged: (text) {},
+                              autovalidateMode: AutovalidateMode.always,
+                              validator: (value) {
+                                return (value!.contains(
+                                        RegExp(r'^[0-9]{1,2}:[0-9]{1,2}$')))
+                                    ? null
+                                    : 'Type a valid time';
+                              },
                               //       style: TextStyle(fontSize: 13),
                             ),
                             TextField(
@@ -178,16 +200,20 @@ class _PlannerState extends State<Planner> {
                           child: Text("Cancel")),
                       TextButton(
                           onPressed: () {
-                            helper.delete("task", v.id);
-                            tasksObj = [];
-                            InicializarOBJ();
-                            _controllerName.text = "";
-                            _controllerDate.text = "";
-                            _controllerNote.text = "";
-                            _controllerEnd.text = "";
-                            _controllerStart.text = "";
-                            setState(() {});
-                            Navigator.pop(context);
+                            helper.delete("task", v.id!).then((value){
+                              if(value == 1){
+                                // tasksObj = [];
+                                InicializarOBJ();
+                                _controllerName.text = "";
+                                _controllerDate.text = "";
+                                _controllerNote.text = "";
+                                _controllerEnd.text = "";
+                                _controllerStart.text = "";
+                                // setState(() {});
+                                Navigator.pop(context);
+                              }
+                            });
+
                           },
                           child: Text("Remove")),
                       TextButton(
@@ -208,8 +234,8 @@ class _PlannerState extends State<Planner> {
                                 isCompleted: v.isCompleted);
 
                             //helper.insert("task", Task("title", userId, 1, "note", "date", "startTime", "endTime"));
-                            helper.updateTask("task", t, v.id);
-                            tasksObj = [];
+                            helper.updateTask("task", t, v.id!);
+                            // tasksObj = [];
                             InicializarOBJ();
                             _controllerName.text = "";
                             _controllerDate.text = "";
@@ -228,10 +254,32 @@ class _PlannerState extends State<Planner> {
       );
     }
 
+    tasks = [];
+    if(_selectedDay != null){
+      tasksObj.forEach((element) {
+        if(element.date == "${_selectedDay!.day}/${_selectedDay!.month}/${_selectedDay!.year}"){
+          insere_task(element);
+        }
+      });
+      tasksObj.forEach((element) {
+        if(element.date != "${_selectedDay!.day}/${_selectedDay!.month}/${_selectedDay!.year}"){
+          insere_task(element);
+        }
+      });
+    } else {
+      tasksObj.forEach((element) {
+        insere_task(element);
+      });
+    }
+
+
     return Scaffold(
       appBar: AppBar(
           leading: GestureDetector(
-            child: Icon(Icons.arrow_back, color: Colors.purple,),
+            child: Icon(
+              Icons.arrow_back,
+              color: Colors.purple,
+            ),
             onTap: () {
               Navigator.pop(context);
             },
@@ -275,27 +323,48 @@ class _PlannerState extends State<Planner> {
                                   onChanged: (text) {},
                                   //      style: TextStyle(fontSize: 13),
                                 ),
-                                TextField(
+                                TextFormField(
                                   controller: _controllerDate,
                                   decoration: InputDecoration(
                                       labelText: "Date (DD/MM/YYYY)"),
                                   onChanged: (text) {},
-                                  //     style: TextStyle(fontSize: 13),
+                                  autovalidateMode: AutovalidateMode.always,
+                                  validator: (value) {
+                                    return (value!.contains(RegExp(
+                                            r'^[0-9]{1,2}/[0-9]{1,2}/[0-9]{4}$')))
+                                        ? null
+                                        : 'Type a valid date';
+                                  },
+                                  //       style: TextStyle(fontSize: 13),
                                 ),
-                                TextField(
+                                TextFormField(
                                   controller: _controllerStart,
                                   decoration: InputDecoration(
                                       labelText: "Start Time (HH:MM)"),
                                   onChanged: (text) {},
-                                  //  style: TextStyle(fontSize: 13),
+                                  autovalidateMode: AutovalidateMode.always,
+                                  validator: (value) {
+                                    return (value!.contains(
+                                            RegExp(r'^[0-9]{1,2}:[0-9]{1,2}$')))
+                                        ? null
+                                        : 'Type a valid time';
+                                  },
+                                  //       style: TextStyle(fontSize: 13),
                                 ),
-                                TextField(
+                                TextFormField(
                                   controller: _controllerEnd,
                                   decoration: InputDecoration(
                                       labelText: "End Time (HH:MM)"),
                                   onChanged: (text) {},
-                                  //     style: TextStyle(fontSize: 13),
-                                )
+                                  autovalidateMode: AutovalidateMode.always,
+                                  validator: (value) {
+                                    return (value!.contains(
+                                            RegExp(r'^[0-9]{1,2}:[0-9]{1,2}$')))
+                                        ? null
+                                        : 'Type a valid time';
+                                  },
+                                  //       style: TextStyle(fontSize: 13),
+                                ),
                               ],
                             ),
                           ),
@@ -325,7 +394,7 @@ class _PlannerState extends State<Planner> {
 
                                 //helper.insert("task", Task("title", userId, 1, "note", "date", "startTime", "endTime"));
                                 helper.insert("task", t);
-                                tasksObj = [];
+                                // tasksObj = [];
                                 InicializarOBJ();
                                 _controllerName.text = "";
                                 _controllerDate.text = "";
@@ -374,12 +443,16 @@ class _PlannerState extends State<Planner> {
                   },
                 )
               ] +
-              tasks + [Center(
-                child: ElevatedButton(child: Text("Carregar"),
-                onPressed: () {
-                  InicializarOBJ();
-                },)
-              )],
+              tasks +
+              [
+                Center(
+                    child: ElevatedButton(
+                  child: Text("Carregar"),
+                  onPressed: () {
+                    InicializarOBJ();
+                  },
+                ))
+              ],
         ),
       ),
     );
