@@ -230,12 +230,9 @@ class _HomeState extends State<Home> {
               itemBuilder: (context) => [
                     PopupMenuItem<int>(
                       value: 0,
-                      child: TextButton(
-                        child: Text("Deslogar",
-                        style: TextStyle(color: Colors.white),),
-                        onPressed: () async {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
-                        },
+                      child: Text(
+                        "Deslogar",
+                        style: TextStyle(color: Colors.white),
                       ),
                     ),
                     PopupMenuItem<int>(
@@ -263,7 +260,7 @@ class _HomeState extends State<Home> {
               onSelected: (item) {
                 switch (item) {
                   case 0:
-                    print(item);
+                    Navigator.pop(context);
                     break;
                   case 1:
                     Navigator.pushNamed(context, Pesquisa.routeName,

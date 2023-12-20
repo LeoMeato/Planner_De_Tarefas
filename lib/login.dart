@@ -69,13 +69,20 @@ class _LoginState extends State<Login> {
                     width: MediaQuery.of(context).size.width - 80,
                     height: 50,
                     child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(backgroundColor: Colors.lightBlue[50]),
-                      onPressed: () async {
-                        if (await helper.usuarioAtivo(userController.text, passwordController.text)) {
-                            int id = await helper.getID(userController.text, passwordController.text);
-                            Navigator.push(context,MaterialPageRoute(builder: ((context) => Home(userId: id))));
-                          } 
-                          else {
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.lightBlue[50]),
+                        onPressed: () async {
+                          if (await helper.usuarioAtivo(
+                              userController.text, passwordController.text)) {
+                            int id = await helper.getID(
+                                userController.text, passwordController.text);
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: ((context) => Home(userId: id))));
+                            userController.text = "";
+                            passwordController.text = "";
+                          } else {
                             setState(() {
                               loginAccepted = false;
                             });
@@ -91,15 +98,20 @@ class _LoginState extends State<Login> {
                     width: MediaQuery.of(context).size.width - 80,
                     height: 50,
                     child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(backgroundColor: Colors.lightBlue[50]),
-                      onPressed: () async {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Cadastro(user: userController.text)));
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.lightBlue[50]),
+                        onPressed: () async {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      Cadastro(user: userController.text)));
                         },
                         child: const Text(
                           'Quero me Cadastrar',
                           style: TextStyle(fontSize: 19, color: Colors.black),
                         )),
-                  ), 
+                  ),
                 ],
               ),
             )
