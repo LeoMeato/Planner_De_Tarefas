@@ -74,7 +74,11 @@ class _CadastroState extends State<Cadastro> {
                       onPressed: () async {
                         await helper.saveUser(userController.text, emailController.text, passwordController.text);
                         int id = await helper.getID(userController.text, passwordController.text);
-                        Navigator.push(context, MaterialPageRoute(builder:(context) => Home(userId: id),));
+                        Navigator.maybePop(context).then((value) {
+                          if (value){
+                            Navigator.push(context, MaterialPageRoute(builder:(context) => Home(userId: id),));
+                          }
+                        });
                       },
                     child: const Text(
                       'Cadastre-se',
