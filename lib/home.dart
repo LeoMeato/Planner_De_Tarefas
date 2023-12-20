@@ -51,7 +51,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    int userId = 1;
+    int userId = widget.userId;
     boards = [];
     MaterialColor c;
     for (var v in boardsObj) {
