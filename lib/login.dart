@@ -5,7 +5,6 @@ import 'helper.dart';
 
 String username = '';
 
-
 class Login extends StatefulWidget {
   const Login({super.key});
 
@@ -73,8 +72,8 @@ class _LoginState extends State<Login> {
                       style: ElevatedButton.styleFrom(backgroundColor: Colors.lightBlue[50]),
                       onPressed: () async {
                         if (await helper.usuarioAtivo(userController.text, passwordController.text)) {
-                            username = userController.text;
-                            Navigator.push(context,MaterialPageRoute(builder: ((context) => Home(user: userController.text))));
+                            int id = await helper.getID(userController.text, passwordController.text);
+                            Navigator.push(context,MaterialPageRoute(builder: ((context) => Home(userId: id))));
                           } 
                           else {
                             setState(() {
@@ -94,7 +93,7 @@ class _LoginState extends State<Login> {
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(backgroundColor: Colors.lightBlue[50]),
                       onPressed: () async {
-                          Navigator.push(context,MaterialPageRoute(builder: (context) => Cadastro(user: userController.text)));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Cadastro(user: userController.text)));
                         },
                         child: const Text(
                           'Quero me Cadastrar',

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'home.dart';
-import 'login.dart';
 import 'helper.dart';
 
 class Cadastro extends StatefulWidget {
@@ -72,10 +71,10 @@ class _CadastroState extends State<Cadastro> {
                     height: 50,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(backgroundColor: Colors.lightBlue[50]),
-                      onPressed: () {
-                        helper.saveUser(emailController.text, userController.text, passwordController.text);
-                        username = userController.text;
-                        Navigator.push(context, MaterialPageRoute(builder:(context) => Home(user: username),));
+                      onPressed: () async {
+                        await helper.saveUser(userController.text, emailController.text, passwordController.text);
+                        int id = await helper.getID(userController.text, passwordController.text);
+                        Navigator.push(context, MaterialPageRoute(builder:(context) => Home(userId: id),));
                       },
                     child: const Text(
                       'Cadastre-se',

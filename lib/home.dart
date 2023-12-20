@@ -7,12 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:Planner_De_Tarefas/helper.dart';
 import 'package:Planner_De_Tarefas/model.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:Planner_De_Tarefas/login.dart';
 
 var list = ["Amarelo", "Laranja", "Vermelho", "Azul", "Verde", "Rosa"];
 
 class Home extends StatefulWidget {
-  const Home({required this.user, super.key});
-  final String user;
+  const Home({required this.userId, super.key});
+  final int userId;
 
   static const routeName = "/home";
 
@@ -229,9 +230,12 @@ class _HomeState extends State<Home> {
               itemBuilder: (context) => [
                     PopupMenuItem<int>(
                       value: 0,
-                      child: Text(
-                        "Deslogar",
-                        style: TextStyle(color: Colors.white),
+                      child: TextButton(
+                        child: Text("Deslogar",
+                        style: TextStyle(color: Colors.white),),
+                        onPressed: () async {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
+                        },
                       ),
                     ),
                     PopupMenuItem<int>(

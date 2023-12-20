@@ -167,6 +167,14 @@ CREATE TABLE if not exists task_board(
     if (users.isEmpty) {return false;} 
     else {return true;}
   }
+
+  Future<int> getID (String user, String password) async {
+    var database = await db;
+    String sql = "SELECT id FROM user WHERE email = '$user' and password = '$password' ";
+    List? users = await database!.rawQuery(sql);
+    int id = users[0];
+    return id;
+  }
 }
 
 /*
