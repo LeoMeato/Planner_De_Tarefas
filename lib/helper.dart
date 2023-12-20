@@ -141,8 +141,8 @@ CREATE TABLE if not exists task_board(
     """;
 
     database!.execute(sql1);
-    database!.execute(sql2);
-    database!.execute(sql3);
+    database.execute(sql2);
+    database.execute(sql3);
   }
 
   Future<void> saveUser(String name, String email, String password) async {
@@ -155,7 +155,7 @@ CREATE TABLE if not exists task_board(
       "password": password
     };
 
-    int id = await database!.insert("user", userData);
+    await database!.insert("user", userData);
   }
 
   Future<bool> usuarioAtivo(String user, String password) async {
@@ -171,9 +171,8 @@ CREATE TABLE if not exists task_board(
   Future<int> getID (String user, String password) async {
     var database = await db;
     String sql = "SELECT id FROM user WHERE email = '$user' and password = '$password' ";
-    List? users = await database!.rawQuery(sql);
-    int id = int.parse(users[0]);
-    return id;
+    List<Map<String, dynamic>> users = await database!.rawQuery(sql);
+    return users[0]["id"];
   }
 }
 
